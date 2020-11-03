@@ -1,0 +1,57 @@
+<div class="card col-md-8 col-sm-12 mt-5 mx-auto">
+  <div class="card-header">
+    <legend>Task</legend>
+  </div>
+
+  <div class="card-body">
+    <form class="form-horizontal" [formGroup]="formTask" (ngSubmit)="onSubmit()">
+      <fieldset>
+        <div class="form-group">
+
+          <div class="col-md-12">
+            <input name="titulo" type="text" placeholder="Título" class="form-control input-md" formControlName="titulo">
+
+            <div class="alert alert-danger col-md-12" *ngIf="f.titulo.invalid && (f.titulo.dirty || f.titulo.touched)">
+              <div *ngIf="f.titulo.errors.required">Título é obrigatório.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-12">
+            <input name="descricao" type="text" placeholder="Descrição" class="form-control input-md" formControlName="descricao">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-12">
+            <select class="form-control input-md" formControlName="status">
+              <option [value]="'0'" [label]="'NOVO'"></option>
+              <option [value]="'1'" [label]="'FINALIZADO'"></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6 ">
+            <input name="dataCriacao" type="text" placeholder="Data cadastro" class="form-control input-md" formControlName="dataCriacao">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6 ">
+            <input name="dataConclusao" type="text" placeholder="Data conclusão" class="form-control input-md" formControlName="dataConclusao">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-12">
+            <button name="Gravar" type="submit" class="btn btn-success mr-2 mt-2">Gravar</button>
+            <button name="Cancelar" (click)="onCancel()" class="btn btn-danger mr-2 mt-2">Cancelar</button>
+          </div>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+</div>
