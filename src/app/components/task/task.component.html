@@ -29,9 +29,10 @@
               <option [value]="'0'" [label]="'NOVO'"></option>
               <option [value]="'1'" [label]="'FINALIZADO'"></option>
             </select>
-          </div>
-          <div class="alert alert-danger col-md-12" *ngIf="f.status.invalid && (f.status.dirty || f.status.touched)">
-            <div *ngIf="f.status.errors.required">Status é obrigatório.</div>
+
+            <div class="alert alert-danger col-md-12" *ngIf="f.status.invalid && (f.status.dirty || f.status.touched)">
+              <div *ngIf="f.status.errors.required">Status é obrigatório.</div>
+            </div>
           </div>
         </div>
 
