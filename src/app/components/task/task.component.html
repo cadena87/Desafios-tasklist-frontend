@@ -30,17 +30,20 @@
               <option [value]="'1'" [label]="'FINALIZADO'"></option>
             </select>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-md-6 ">
-            <input name="dataCriacao" type="text" placeholder="Data cadastro" class="form-control input-md" formControlName="dataCriacao">
+          <div class="alert alert-danger col-md-12" *ngIf="f.status.invalid && (f.status.dirty || f.status.touched)">
+            <div *ngIf="f.status.errors.required">Status é obrigatório.</div>
           </div>
         </div>
 
         <div class="form-group">
           <div class="col-md-6 ">
-            <input name="dataConclusao" type="text" placeholder="Data conclusão" class="form-control input-md" formControlName="dataConclusao">
+            <input name="dataCriacao" type="text" placeholder="Data cadastro" class="form-control input-md" formControlName="dataCriacao" disabled>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6 ">
+            <input name="dataConclusao" type="text" placeholder="Data conclusão" class="form-control input-md" formControlName="dataConclusao" disabled>
           </div>
         </div>
 

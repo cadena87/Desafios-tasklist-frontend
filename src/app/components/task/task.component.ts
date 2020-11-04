@@ -1,5 +1,5 @@
 import {Component, OnInit, Pipe} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Task, TaskStatus} from '../../models/task';
 import {TaskService} from '../../services/task.service';
 import {ActivatedRoute} from '@angular/router';
