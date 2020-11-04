@@ -1,7 +1,7 @@
 const proxy = [
   {
     context: '/api/v1',
-    target: 'http://localhost:8080',
+    target: 'https://dashboard.heroku.com/apps/ws-tasklist-api',
     pathRewrite: {'^/api/v1' : ''}
   }
 ];
