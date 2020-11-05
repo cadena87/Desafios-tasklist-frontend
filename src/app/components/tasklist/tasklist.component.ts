@@ -32,6 +32,7 @@ export class TasklistComponent implements OnInit {
 
         this.tasklist.forEach(task => {
             task = this.service.getColor(task);
+            task.isChecked = task.status === TaskStatus.FINALIZADO;
           }
         );
 
