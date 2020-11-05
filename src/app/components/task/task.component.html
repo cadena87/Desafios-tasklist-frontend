@@ -1,6 +1,6 @@
 <div class="card col-md-8 col-sm-12 mt-5 mx-auto">
   <div class="card-header">
-    <legend>Task</legend>
+    <legend>Tarefa</legend>
   </div>
 
   <div class="card-body">
@@ -9,6 +9,7 @@
         <div class="form-group">
 
           <div class="col-md-12">
+            <label>Título</label>
             <input name="titulo" type="text" placeholder="Título" class="form-control input-md" formControlName="titulo">
 
             <div class="alert alert-danger col-md-12" *ngIf="f.titulo.invalid && (f.titulo.dirty || f.titulo.touched)">
@@ -19,15 +20,17 @@
 
         <div class="form-group">
           <div class="col-md-12">
+            <label>Descricao</label>
             <input name="descricao" type="text" placeholder="Descrição" class="form-control input-md" formControlName="descricao">
           </div>
         </div>
 
         <div class="form-group">
           <div class="col-md-12">
-            <select class="form-control input-md" formControlName="status">
-              <option [value]="'0'" [label]="'NOVO'"></option>
-              <option [value]="'1'" [label]="'FINALIZADO'"></option>
+            <label>Status</label>
+            <select class="form-control input-md" formControlName="status" name="status">
+              <option [ngValue]="null">Select one...</option>
+              <option *ngFor="let type of taskStatus | keyvalue" [ngValue]="type.value">{{type.value}}</option>
             </select>
 
             <div class="alert alert-danger col-md-12" *ngIf="f.status.invalid && (f.status.dirty || f.status.touched)">
@@ -37,20 +40,22 @@
         </div>
 
         <div class="form-group">
-          <div class="col-md-6 ">
-            <input name="dataCriacao" type="text" placeholder="Data cadastro" class="form-control input-md" formControlName="dataCriacao" disabled>
+          <div class="col-md-6 col-sm-12">
+            <label>Data Abertura</label>
+            <input name="dataCriacao" type="text" class="form-control input-md" formControlName="dataCriacao" disabled>
           </div>
         </div>
 
         <div class="form-group">
-          <div class="col-md-6 ">
-            <input name="dataConclusao" type="text" placeholder="Data conclusão" class="form-control input-md" formControlName="dataConclusao" disabled>
+          <div class="col-md-6 col-sm-12">
+            <label>Data Finalização</label>
+            <input name="dataConclusao" type="text" class="form-control input-md" formControlName="dataConclusao" disabled>
           </div>
         </div>
 
         <div class="form-group">
           <div class="col-md-12">
-            <button name="Gravar" type="submit" class="btn btn-success mr-2 mt-2">Gravar</button>
+            <button name="Gravar" type="submit" class="btn btn-success mr-2 mt-2" [disabled]="!formTask.valid">Gravar</button>
             <button name="Cancelar" (click)="onCancel()" class="btn btn-danger mr-2 mt-2">Cancelar</button>
           </div>
         </div>

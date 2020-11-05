@@ -3,13 +3,11 @@ import {Task, TaskStatus} from '../../models/task';
 import {TaskService} from '../../services/task.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-tasklist',
   templateUrl: './tasklist.component.html',
   styleUrls: ['./tasklist.component.scss'],
-  providers: [DatePipe]
 })
 export class TasklistComponent implements OnInit {
 
@@ -19,10 +17,9 @@ export class TasklistComponent implements OnInit {
   tableSize = 7;
   tableSizes = [10, 25, 50, 100];
 
-  constructor(private service: TaskService,
+  constructor(public service: TaskService,
               private router: Router,
-              private toastr: ToastrService,
-              private datePipe: DatePipe) { }
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.findAll();
@@ -34,8 +31,7 @@ export class TasklistComponent implements OnInit {
         this.tasklist = value;
 
         this.tasklist.forEach(task => {
-            task = this.getColor(task);
-            this.isChecked(task);
+            task = this.service.getColor(task);
           }
         );
 
@@ -62,41 +58,32 @@ export class TasklistComponent implements OnInit {
     this.router.navigate(['/Task']);
   }
 
-  getColor(value: Task): Task {
-    switch (value.status.toString()) {
-      case 'NOVO': value.color = 'red'; break;
-      case 'FINALIZADO': value.color = 'blue'; break;
-      default: value.color = 'red'; break;
-    }
-
-    return value;
-  }
-
   setStatus(value: Task): Task {
-    switch (value.status) {
-      case 'NOVO':
-        value.status = TaskStatus.FINALIZADO;
-        value.dataConclusao = new Date();
 
-        this.service.updateTask(value.id, value)
-          .then(task => {
-            this.toastr.success('Tarefa finalizada', 'Tarefa');
-          })
-          .catch(err => console.log(err));
+    switch (value.status) {
+      case TaskStatus.NOVO:
+        value.status = TaskStatus.FINALIZADO;
+        value.isChecked = true;
         break;
-      case 'FINALIZADO': value.status = TaskStatus.NOVO; break;
+      case TaskStatus.FINALIZADO:
+        value.status = TaskStatus.NOVO;
+        value.isChecked = false;
+        break;
       default: value.status = TaskStatus.NOVO; break;
     }
 
-    this.getColor(value);
+    this.service.getColor(value);
+
+    this.service.updateTask(value.id, value)
+      .then(reuslt => {
+        this.toastr.success('Tarefa alterada', 'Tarefa');
+      })
+      .catch(err => {
+        this.toastr.warning('Problema ao atualizar a tarefa', 'Tarefa');
+        console.log(err);
+      });
 
     return value;
-  }
-
-  isChecked(value: Task): boolean {
-    value.isChecked = value.status === 'FINALIZADO';
-
-    return value.isChecked;
   }
 
   onTableDataChange(event){

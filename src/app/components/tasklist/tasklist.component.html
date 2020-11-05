@@ -45,20 +45,20 @@
           <div class="d-inline-flex mr-2">
             <div class="checkbox">
               <label for="checkboxes-0">
-                <input (click)="setStatus(task)" [checked]="isChecked(task)" type="checkbox" name="checkboxes" id="checkboxes-0">
+                <input (click)="setStatus(task)" [checked]="task.isChecked" type="checkbox" name="checkboxes" id="checkboxes-0">
               </label>
             </div>
           </div>
           <div class="d-inline-flex">
-            <span [ngStyle]="{'color':task.color }">{{ task.status }}</span>
+            <span [ngStyle]="{'color':task.color }">{{  service.getStatus(task) }}</span>
           </div>
         </td>
         <td><span>{{ task.titulo }}</span></td>
         <td><span>{{ task.descricao }}</span></td>
         <td><span>{{ task.dataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}</span></td>
         <td>
-          <button class="btn-danger btn-sm mr-1" (click)="deleteTask(task.id)">Excluir</button>
-          <button class="btn-primary btn-sm" (click)="editTask(task.id)">Alterar</button>
+          <button class="btn-danger btn-sm mr-1" type="button" (click)="deleteTask(task.id)">Excluir</button>
+          <button class="btn-primary btn-sm" type="button" (click)="editTask(task.id)">Alterar</button>
         </td>
       </tr>
     </tbody>

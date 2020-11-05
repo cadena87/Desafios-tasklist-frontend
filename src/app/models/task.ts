@@ -13,4 +13,8 @@ export class Task {
   dataConclusao: Date;
   color = '#000';
   isChecked: boolean;
+
+  constructor() {
+
+  }
 }

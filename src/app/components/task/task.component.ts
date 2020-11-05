@@ -1,5 +1,5 @@
-import {Component, OnInit, Pipe} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Task, TaskStatus} from '../../models/task';
 import {TaskService} from '../../services/task.service';
 import {ActivatedRoute} from '@angular/router';
@@ -15,9 +15,8 @@ import {ToastrService} from 'ngx-toastr';
 export class TaskComponent implements OnInit {
 
   task = new Task();
+  taskStatus = TaskStatus;
   formTask: FormGroup;
-  taskTypes = TaskStatus;
-  taskTypeOptions = [];
   id: number;
 
   constructor(private formBuilder: FormBuilder,
@@ -41,14 +40,14 @@ export class TaskComponent implements OnInit {
                 default: this.task.status = TaskStatus.NOVO; break;
               }
 
+              console.log(this.task);
+
               this.createForm(this.task);
-              this.taskTypeOptions = Object.keys(this.taskTypes);
             }).catch(err => console.log(err));
         }
       });
 
     this.createForm(this.task);
-    this.taskTypeOptions = Object.keys(this.taskTypes);
   }
 
   createForm(task: Task) {
@@ -56,8 +55,8 @@ export class TaskComponent implements OnInit {
       titulo: [task.titulo, Validators.required],
       descricao: [task.descricao],
       status: [task.status, Validators.required],
-      dataCriacao: [task.dataCriacao],
-      dataConclusao: [task.dataConclusao]
+      dataCriacao: [this.datePipe.transform(task.dataCriacao, 'dd-MM-yyyy HH:mm:ss') || ''],
+      dataConclusao: [this.datePipe.transform(task.dataConclusao, 'dd-MM-yyyy HH:mm:ss') || '']
     });
   }
 
@@ -72,17 +71,24 @@ export class TaskComponent implements OnInit {
 
     if (this.id !== undefined && !isNaN(this.id)) {
       this.service.updateTask(this.id, Object.assign(new Task(), this.formTask.value))
-        .then(value => console.log(value))
-        .catch(err => console.log(err));
-
-      this.toastr.success('Tarefa alterada', 'Tarefa');
+        .then(value => {
+          this.toastr.success('Tarefa alterada', 'Tarefa');
+        })
+        .catch(err => {
+          this.toastr.warning('Problema ao atualizar a tarefa', 'Tarefa');
+          console.log(err);
+        });
     } else {
 
       this.service.createTask(Object.assign(new Task(), this.formTask.value))
-        .then(value => console.log(value))
-        .catch(err => console.log(err));
-
-      this.toastr.success('Tarefa inserida', 'Tarefa');
+        .then(value => {
+          this.toastr.success('Tarefa inserida', 'Tarefa');
+          console.log(value);
+        })
+        .catch(err => {
+          this.toastr.warning('Problema ao gravar a tarefa', 'Tarefa');
+          console.log(err);
+        });
 
       this.formTask.reset();
     }
@@ -91,5 +97,4 @@ export class TaskComponent implements OnInit {
   onCancel() {
     this.formTask.reset();
   }
-
 }
